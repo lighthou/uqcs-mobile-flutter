@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uqcs_mobile_flutter/sign_in.dart';
+import 'package:uqcs_mobile_flutter/signup_1.dart';
 
 import 'first_screen.dart';
 import 'google_sign_in_button.dart';
@@ -20,52 +21,42 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('assets/uqcs_logo.png'),
+              Image.asset('assets/images/uqcs_logo.png'),
               SizedBox(height: 50),
-              GoogleSignInButton(),
+              ImageButton(
+                image: Image(
+                  image: AssetImage('assets/images/google_logo.png'),
+                  height: 35.0,
+                ),
+                text: 'Sign in with Google',
+                onPressed: () {
+                  signInWithGoogle().whenComplete(() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return OnboardingScreen();
+                        },
+                      ),
+                    );
+                  });
+                },
+              ),
+              ImageButton(
+                text: 'I dont want to Sign In',
+                onPressed: () {
+                  signInWithGoogle().whenComplete(() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MyWidget();
+                        },
+                      ),
+                    );
+                  });
+                },
+              ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _signInButton() {
-    return OutlineButton(
-      splashColor: Colors.grey,
-      color: Colors.white,
-      onPressed: () {
-        signInWithGoogle().whenComplete(() {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return FirstScreen();
-              },
-            ),
-          );
-        });
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            )
-          ],
         ),
       ),
     );
