@@ -10,6 +10,8 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
+  final emailRegex =
+      RegExp(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
   final int _numPages = 4;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
@@ -69,6 +71,7 @@ class _MyWidgetState extends State<MyWidget> {
                         },
                         textInputType: TextInputType.text,
                         maxLength: 50,
+                        textValidation: RegExp(r".*"),
                       ),
                       OnboardingTextInputPage(
                         promptText: "What is your email address?",
@@ -82,6 +85,7 @@ class _MyWidgetState extends State<MyWidget> {
                         },
                         textInputType: TextInputType.emailAddress,
                         maxLength: 50,
+                        textValidation: emailRegex,
                       ),
                       OnboardingSingleChoiceInputPage(
                         promptText: "What is your gender?",
@@ -108,6 +112,7 @@ class _MyWidgetState extends State<MyWidget> {
                         },
                         textInputType: TextInputType.number,
                         maxLength: 8,
+                        textValidation: RegExp(r"[0-9]{8}"),
                       )
                     ],
                   ),

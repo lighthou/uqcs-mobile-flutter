@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uqcs_mobile_flutter/styles.dart';
 
 import 'colors.dart';
@@ -9,13 +10,15 @@ class OnboardingTextInputPage extends StatefulWidget {
   final TextInputType textInputType;
   final Function onNextButtonPressed;
   final int maxLength;
+  final RegExp textValidation;
 
   OnboardingTextInputPage(
       {@required this.promptText,
       @required this.hintText,
       @required this.onNextButtonPressed,
       @required this.textInputType,
-      @required this.maxLength});
+      @required this.maxLength,
+      this.textValidation});
 
   @override
   _OnboardingTextInputPageState createState() =>
@@ -52,14 +55,17 @@ class _OnboardingTextInputPageState extends State<OnboardingTextInputPage> {
           keyboardType: widget.textInputType,
           onChanged: (text) {
             setState(() {
-              _nextButtonEnabled = text.isEmpty ? false : true;
+              _nextButtonEnabled =
+                  widget.textValidation.hasMatch(text) ? true : false;
             });
           },
           controller: textFieldController,
           focusNode: _focusNode,
           maxLength: widget.maxLength,
           style: kTextFieldInputStyle,
-          decoration: InputDecoration.collapsed(
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            counterText: '',
             hintStyle: kTextFieldInputStyle.copyWith(color: disabledColor),
             hintText: widget.hintText,
           ),
