@@ -8,6 +8,13 @@ final kTitleStyle = TextStyle(
   height: 1.5,
 );
 
+final kSingleSelectButtonTextStyle = TextStyle(
+  color: Colors.white,
+  fontFamily: 'Biotif',
+  fontSize: 25.0,
+  height: 1.5,
+);
+
 final kTextFieldInputStyle = TextStyle(
   color: uqcsBlue,
   fontFamily: 'Biotif',
