@@ -16,6 +16,20 @@ class _MyWidgetState extends State<MyWidget> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
+  Function createVariableCallback(dynamic variable) {
+    return (value) {
+      setState(() {
+        print("Got value: $value");
+        variable = value;
+      });
+    };
+  }
+
+  String _fullName;
+  String _email;
+  String _gender;
+  bool _isStudent;
+
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
     for (int i = 0; i < _numPages; i++) {
@@ -61,6 +75,8 @@ class _MyWidgetState extends State<MyWidget> {
                     physics: NeverScrollableScrollPhysics(),
                     children: <Widget>[
                       OnboardingTextInputPage(
+                        initalText: _fullName,
+                        completionCallback: createVariableCallback(_fullName),
                         promptText: "What is your full name?",
                         hintText: "John Smith",
                         onNextButtonPressed: () {
@@ -71,9 +87,10 @@ class _MyWidgetState extends State<MyWidget> {
                         },
                         textInputType: TextInputType.text,
                         maxLength: 50,
-                        textValidation: RegExp(r".*"),
+                        textValidation: RegExp(r".+"),
                       ),
                       OnboardingTextInputPage(
+                        completionCallback: createVariableCallback(_email),
                         promptText: "What is your email address?",
                         hintText: "s4433119@student.uq.edu.au",
                         onNextButtonPressed: () {
@@ -88,6 +105,7 @@ class _MyWidgetState extends State<MyWidget> {
                         textValidation: emailRegex,
                       ),
                       OnboardingSingleChoiceInputPage(
+                        completionCallback: createVariableCallback(_gender),
                         promptText: "What is your gender?",
                         buttonChoices: [
                           "Male",
@@ -100,6 +118,18 @@ class _MyWidgetState extends State<MyWidget> {
                             curve: Curves.ease,
                           );
                         },
+                      ),
+                      OnboardingSingleChoiceInputPage(
+                        completionCallback: createVariableCallback(_isStudent),
+                        promptText: "Are you studying at UQ?",
+                        extraText: "This helps us get extra funding from UQg@g",
+                        onNextButtonPressed: () {
+                          _pageController.nextPage(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.ease,
+                          );
+                        },
+                        buttonChoices: <String>["Yes", "No"],
                       ),
                       OnboardingTextInputPage(
                         promptText: "What is your student number?",

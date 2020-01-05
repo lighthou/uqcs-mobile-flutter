@@ -15,6 +15,13 @@ final kSingleSelectButtonTextStyle = TextStyle(
   height: 1.5,
 );
 
+final kExtraTextStyle = TextStyle(
+  color: Colors.grey,
+  fontFamily: 'Biotif',
+  fontSize: 15.0,
+  height: 1.5,
+);
+
 final kTextFieldInputStyle = TextStyle(
   color: uqcsBlue,
   fontFamily: 'Biotif',

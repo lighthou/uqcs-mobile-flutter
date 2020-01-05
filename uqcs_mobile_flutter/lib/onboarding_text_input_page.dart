@@ -5,12 +5,14 @@ import 'package:uqcs_mobile_flutter/styles.dart';
 import 'colors.dart';
 
 class OnboardingTextInputPage extends StatefulWidget {
+  final String initalText;
   final String promptText;
   final String hintText;
   final TextInputType textInputType;
   final Function onNextButtonPressed;
   final int maxLength;
   final RegExp textValidation;
+  final Function completionCallback;
 
   OnboardingTextInputPage(
       {@required this.promptText,
@@ -18,7 +20,9 @@ class OnboardingTextInputPage extends StatefulWidget {
       @required this.onNextButtonPressed,
       @required this.textInputType,
       @required this.maxLength,
-      this.textValidation});
+      this.textValidation,
+      @required this.completionCallback,
+      this.initalText});
 
   @override
   _OnboardingTextInputPageState createState() =>
@@ -28,13 +32,14 @@ class OnboardingTextInputPage extends StatefulWidget {
 class _OnboardingTextInputPageState extends State<OnboardingTextInputPage> {
   String currentInput;
   bool _nextButtonEnabled = false;
-  final textFieldController = TextEditingController();
+  String _currentText;
   final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => FocusScope.of(context).requestFocus(_focusNode));
+    _nextButtonEnabled = widget.initalText != null;
     super.initState();
   }
 
@@ -51,15 +56,16 @@ class _OnboardingTextInputPageState extends State<OnboardingTextInputPage> {
         SizedBox(
           height: 20.0,
         ),
-        TextField(
+        TextFormField(
+          initialValue: widget.initalText,
           keyboardType: widget.textInputType,
           onChanged: (text) {
+            _currentText = text;
             setState(() {
               _nextButtonEnabled =
-                  widget.textValidation.hasMatch(text) ? true : false;
+                  widget.textValidation.hasMatch(_currentText) ? true : false;
             });
           },
-          controller: textFieldController,
           focusNode: _focusNode,
           maxLength: widget.maxLength,
           style: kTextFieldInputStyle,
@@ -85,6 +91,9 @@ class _OnboardingTextInputPageState extends State<OnboardingTextInputPage> {
                 onPressed: !_nextButtonEnabled
                     ? null
                     : () {
+                        widget.completionCallback(_currentText == null
+                            ? widget.initalText
+                            : _currentText);
                         widget.onNextButtonPressed();
                       }),
           ),

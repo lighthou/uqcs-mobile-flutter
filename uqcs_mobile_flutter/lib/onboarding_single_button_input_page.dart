@@ -8,11 +8,15 @@ class OnboardingSingleChoiceInputPage extends StatefulWidget {
   final String promptText;
   final List<String> buttonChoices;
   final Function onNextButtonPressed;
+  final String extraText;
+  final Function completionCallback;
 
   OnboardingSingleChoiceInputPage(
       {@required this.promptText,
       @required this.buttonChoices,
-      @required this.onNextButtonPressed});
+      @required this.onNextButtonPressed,
+      this.extraText,
+      @required this.completionCallback});
 
   @override
   _OnboardingSingleChoiceInputPageState createState() =>
@@ -37,6 +41,10 @@ class _OnboardingSingleChoiceInputPageState
             widget.promptText,
             style: kTitleStyle,
           ),
+          Text(
+            widget.extraText ?? "",
+            style: kExtraTextStyle,
+          ),
           SizedBox(
             height: 40.0,
           ),
@@ -60,6 +68,7 @@ class _OnboardingSingleChoiceInputPageState
                 onPressed: !_nextButtonEnabled
                     ? null
                     : () {
+                        widget.completionCallback(_selectedItem);
                         widget.onNextButtonPressed();
                       }),
           ),
